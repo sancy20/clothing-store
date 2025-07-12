@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import { logout } from "../services/authService";
 import axios from "axios";
+import api from "../api";
 import {
   IoSearchOutline,
   IoBagOutline,
@@ -76,7 +77,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchNavData = async () => {
       try {
-        const { data } = await axios.get("/api/products/navigation-data");
+        const { data } = await api.get("/products/navigation-data");
 
         const desiredOrder = ["Clothing", "Shoes", "Bags", "Accessories"];
         const sortCategories = (categoryData) => {
