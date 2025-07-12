@@ -1,126 +1,69 @@
-import axios from "axios";
-
-const API_URL = "/api/users";
-
-const getAuthHeaders = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user && user.token) {
-    return { Authorization: `Bearer ${user.token}` };
-  }
-  return {};
-};
+import api from "../api";
 
 // --- Public Functions ---
-const getAllProducts = async (params = {}) => {
-  try {
-    const response = await axios.get(API_URL, { params });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    throw error;
-  }
+export const getAllProducts = async (params = {}) => {
+  const response = await api.get("/products", { params });
+  return response.data;
 };
 
-const getProductById = async (id) => {
-  try {
-    const response = await axios.get(`${API_URL}/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching product with ID ${id}:`, error);
-    throw error;
-  }
+export const getProductById = async (id) => {
+  const response = await api.get(`/products/${id}`);
+  return response.data;
 };
 
-// ADD THIS NEW FUNCTION
-const getNavigationData = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/navigation-data`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching navigation data:", error);
-    throw error;
-  }
+export const getNavigationData = async () => {
+  const response = await api.get("/products/navigation-data");
+  return response.data;
+};
+
+export const getRelatedProducts = async (productId) => {
+  const response = await api.get(`/products/${productId}/related`);
+  return response.data;
 };
 
 // --- Admin Functions ---
-const createProduct = async (productData) => {
-  const response = await axios.post(API_URL, productData, {
-    headers: getAuthHeaders(),
-  });
+export const createProduct = async (productData) => {
+  const response = await api.post("/products", productData);
   return response.data;
 };
 
-const updateProduct = async (id, productData) => {
-  const response = await axios.put(`${API_URL}/${id}`, productData, {
-    headers: getAuthHeaders(),
-  });
+export const updateProduct = async (id, productData) => {
+  const response = await api.put(`/products/${id}`, productData);
   return response.data;
 };
 
-const deleteProduct = async (id) => {
-  const response = await axios.delete(`${API_URL}/${id}`, {
-    headers: getAuthHeaders(),
-  });
+export const deleteProduct = async (id) => {
+  const response = await api.delete(`/products/${id}`);
   return response.data;
 };
 
-// --- NEW ADMIN FUNCTIONS FOR VARIANTS & IMAGES ---
 export const addVariant = async (productId, variantData) => {
-  const response = await axios.post(
-    `${API_URL}/${productId}/variants`,
-    variantData,
-    { headers: getAuthHeaders() }
+  const response = await api.post(
+    `/products/${productId}/variants`,
+    variantData
   );
   return response.data;
 };
 
 export const updateVariant = async (variantId, variantData) => {
-  const response = await axios.put(
-    `${API_URL}/variants/${variantId}`,
-    variantData,
-    { headers: getAuthHeaders() }
+  const response = await api.put(
+    `/products/variants/${variantId}`,
+    variantData
   );
   return response.data;
 };
 
 export const deleteVariant = async (variantId) => {
-  const response = await axios.delete(`${API_URL}/variants/${variantId}`, {
-    headers: getAuthHeaders(),
-  });
+  const response = await api.delete(`/products/variants/${variantId}`);
   return response.data;
 };
 
 export const addImage = async (productId, imageData) => {
-  const response = await axios.post(
-    `${API_URL}/${productId}/images`,
-    imageData,
-    { headers: getAuthHeaders() }
-  );
+  const response = await api.post(`/products/${productId}/images`, imageData);
   return response.data;
 };
 
 export const deleteImage = async (imageId) => {
-  const response = await axios.delete(`${API_URL}/images/${imageId}`, {
-    headers: getAuthHeaders(),
-  });
+  const response = await api.delete(`/products/images/${imageId}`);
   return response.data;
-};
-
-export const getRelatedProducts = async (productId) => {
-  try {
-    const response = await axios.get(`${API_URL}/${productId}/related`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching related products:", error);
-    throw error;
-  }
-};
-
-export {
-  getAllProducts,
-  getProductById,
-  getNavigationData,
-  createProduct,
-  updateProduct,
-  deleteProduct,
 };

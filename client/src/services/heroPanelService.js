@@ -1,45 +1,28 @@
-import axios from "axios";
-
-const API_URL = "/api/hero-panels";
-
-const getAuthHeaders = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user && user.token) {
-    return { Authorization: `Bearer ${user.token}` };
-  }
-  return {};
-};
+import api from "../api";
 
 // --- Public Function ---
 export const getActiveHeroPanels = async () => {
-  const response = await axios.get(`${API_URL}/active`);
+  const response = await api.get("/hero-panels/active");
   return response.data;
 };
 
 // --- Admin Functions ---
 export const getAllHeroPanels = async () => {
-  const response = await axios.get(API_URL, { headers: getAuthHeaders() });
+  const response = await api.get("/hero-panels");
   return response.data;
 };
 
 export const createHeroPanel = async (panelData) => {
-  const response = await axios.post(API_URL, panelData, {
-    headers: getAuthHeaders(),
-  });
+  const response = await api.post("/hero-panels", panelData);
   return response.data;
 };
 
-// --- NEW FUNCTION ---
 export const updateHeroPanel = async (id, panelData) => {
-  const response = await axios.put(`${API_URL}/${id}`, panelData, {
-    headers: getAuthHeaders(),
-  });
+  const response = await api.put(`/hero-panels/${id}`, panelData);
   return response.data;
 };
 
 export const deleteHeroPanel = async (id) => {
-  const response = await axios.delete(`${API_URL}/${id}`, {
-    headers: getAuthHeaders(),
-  });
+  const response = await api.delete(`/hero-panels/${id}`);
   return response.data;
 };
