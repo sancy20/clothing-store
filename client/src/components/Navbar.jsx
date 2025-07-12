@@ -474,11 +474,11 @@ const Navbar = () => {
                 <div className='space-y-2'>
                   <p className='text-sm'>Signed in as {user.name}</p>
                   <Link
-                    to='/my-orders'
+                    to='/dashboard'
                     onClick={closeAllMenus}
                     className='block'
                   >
-                    My Orders
+                    Dashboard
                   </Link>
                   {user.role === "admin" && (
                     <Link
