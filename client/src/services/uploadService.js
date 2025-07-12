@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/upload";
+const API_URL = "/api/upload";
 
 const getAuthHeaders = () => {
   const user = JSON.parse(localStorage.getItem("user"));

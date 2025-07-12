@@ -13,8 +13,6 @@ import {
   IoCloudUploadOutline,
 } from "react-icons/io5";
 
-const API_BASE_URL = "http://localhost:5000";
-
 const AdminHeroPanelPage = () => {
   const [panels, setPanels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -175,12 +173,12 @@ const AdminHeroPanelPage = () => {
                 <td className='px-6 py-4'>
                   <div className='flex items-center space-x-2'>
                     <img
-                      src={`${API_BASE_URL}${panel.imageUrl}`}
+                      src={panel.imageUrl}
                       alt='Panel'
                       className='w-10 h-16 object-cover rounded-sm bg-gray-700'
                     />
                     <img
-                      src={`${API_BASE_URL}${panel.logoUrl}`}
+                      src={panel.imageUrl}
                       alt='Logo'
                       className='w-8 h-8 object-contain bg-gray-700'
                     />

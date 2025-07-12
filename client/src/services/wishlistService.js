@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/wishlist";
+const API_URL = "/api/wishlist";
 
 const getAuthHeaders = () => {
   const user = JSON.parse(localStorage.getItem("user"));

@@ -5,7 +5,7 @@ import {
   deleteProduct,
   createProduct,
 } from "../services/productService";
-import ProductFormModal from "../components/ProductFormModal"; // We can reuse the modal for creating new products
+import ProductFormModal from "../components/ProductFormModal";
 
 const AdminProductListPage = () => {
   const [products, setProducts] = useState([]);

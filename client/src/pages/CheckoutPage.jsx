@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../hooks/useCart";
-import { useAuth } from "../hooks/useAuth"; // <-- CORRECTED IMPORT PATH
+import { useAuth } from "../hooks/useAuth";
 import {
   createCodOrder,
   initiateKhqrPayment,
@@ -9,7 +9,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { IoShieldCheckmarkOutline, IoPricetagsOutline } from "react-icons/io5";
 
-// --- A new child component for the Order Summary ---
 const OrderSummary = ({ cartItems }) => {
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,

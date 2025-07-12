@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getActiveHeroPanels } from "../services/heroPanelService";
 
-const API_BASE_URL = "http://localhost:5000";
-
 const Hero = () => {
   const [heroPanels, setHeroPanels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +54,7 @@ const Hero = () => {
               aria-label={`Explore ${panel.brand}`}
             >
               <img
-                src={`${API_BASE_URL}${panel.imageUrl}`}
+                src={panel.imageUrl}
                 alt={`Hero Image for ${panel.brand}`}
                 className='h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:brightness-75'
               />
@@ -64,7 +62,7 @@ const Hero = () => {
 
             <div>
               <img
-                src={`${API_BASE_URL}${panel.logoUrl}`}
+                src={panel.imageUrl}
                 alt={`Logo for ${panel.brand}`}
                 className='absolute w-10 h-10 object-contain bottom-2 left-2 group-hover:w-24 group-hover:h-24 group-hover:bottom-1/2 group-hover:left-1/2 group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out'
               />
