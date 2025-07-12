@@ -1,25 +1,14 @@
-import axios from "axios";
-
-const API_URL = "/api/upload";
-
-const getAuthHeaders = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user && user.token) {
-    return {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${user.token}`,
-    };
-  }
-  return {};
-};
+import api from "../api";
 
 export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("image", file);
 
   try {
-    const response = await axios.post(API_URL, formData, {
-      headers: getAuthHeaders(),
+    const response = await api.post("/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
     return response.data;
   } catch (error) {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../services/authService";
+import { useAuth } from "../hooks/useAuth";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const RegisterPage = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,8 +25,9 @@ const RegisterPage = () => {
       return;
     }
     try {
-      await register(formData);
-      navigate("/"); // Redirect without reloading
+      const userData = await register(formData);
+      login(userData);
+      navigate("/");
     } catch (err) {
       setError(
         err.response?.data?.message || "Registration failed. Please try again."
