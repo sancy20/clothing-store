@@ -76,9 +76,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchNavData = async () => {
       try {
-        const { data } = await axios.get(
-          "http://localhost:5000/api/products/navigation-data"
-        );
+        const { data } = await axios.get("/api/products/navigation-data");
 
         const desiredOrder = ["Clothing", "Shoes", "Bags", "Accessories"];
         const sortCategories = (categoryData) => {
