@@ -15,6 +15,7 @@ const { protect, admin } = require("../middleware/authMiddleware");
 router.post("/initiate-khqr", protect, initiateKhqrPayment);
 router.post("/cod", protect, createCodOrder);
 router.get("/status/:orderId", protect, getOrderStatus);
+router.get("/mine", protect, getMyOrders);
 
 // === WEBHOOK ROUTE (NO AUTH) ===
 router.post("/webhook/payment-complete", handlePaymentWebhook);
