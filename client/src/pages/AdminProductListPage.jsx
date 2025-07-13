@@ -4,14 +4,17 @@ import {
   getAllProducts,
   deleteProduct,
   createProduct,
+  updateProduct,
 } from "../services/productService";
 import ProductFormModal from "../components/ProductFormModal";
+import { IoPencil, IoTrash } from "react-icons/io5";
 
 const AdminProductListPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const fetchProducts = async () => {
     try {
@@ -37,21 +40,36 @@ const AdminProductListPage = () => {
     ) {
       try {
         await deleteProduct(id);
-        fetchProducts(); // Refresh the list
+        fetchProducts();
       } catch (err) {
         setError("Failed to delete product.");
       }
     }
   };
 
-  const handleCreateProduct = async (productData) => {
+  const handleFormSubmit = async (productData) => {
     try {
-      await createProduct(productData);
+      if (editingProduct) {
+        await updateProduct(editingProduct.id, productData);
+      } else {
+        await createProduct(productData);
+      }
       setIsModalOpen(false);
+      setEditingProduct(null);
       fetchProducts();
     } catch (err) {
-      setError("Failed to create product.");
+      setError("Failed to save product.");
     }
+  };
+
+  const handleOpenCreateModal = () => {
+    setEditingProduct(null);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (product) => {
+    setEditingProduct(product);
+    setIsModalOpen(true);
   };
 
   if (loading) return <p className='text-center'>Loading products...</p>;
@@ -62,7 +80,7 @@ const AdminProductListPage = () => {
       <div className='flex justify-between items-center'>
         <h1 className='text-3xl font-bold'>Products</h1>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleOpenCreateModal}
           className='px-4 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700'
         >
           Add New Product
@@ -92,7 +110,7 @@ const AdminProductListPage = () => {
                 <td className='px-6 py-4'>{product.brand}</td>
                 <td className='px-6 py-4'>{product.category}</td>
                 <td className='px-6 py-4'>${product.price}</td>
-                <td className='px-6 py-4 space-x-4'>
+                <td className='px-6 py-4 flex items-center space-x-4'>
                   <Link
                     to={`/admin/product/${product.id}`}
                     className='font-medium text-blue-500 hover:underline'
@@ -100,10 +118,18 @@ const AdminProductListPage = () => {
                     Manage
                   </Link>
                   <button
-                    onClick={() => handleDelete(product.id)}
-                    className='font-medium text-red-500 hover:underline'
+                    onClick={() => handleOpenEditModal(product)}
+                    className='text-yellow-400 hover:text-yellow-300'
+                    title='Edit'
                   >
-                    Delete
+                    <IoPencil />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(product.id)}
+                    className='text-red-500 hover:text-red-400'
+                    title='Delete'
+                  >
+                    <IoTrash />
                   </button>
                 </td>
               </tr>
@@ -115,7 +141,8 @@ const AdminProductListPage = () => {
       {isModalOpen && (
         <ProductFormModal
           onClose={() => setIsModalOpen(false)}
-          onSubmit={handleCreateProduct}
+          onSubmit={handleFormSubmit}
+          product={editingProduct}
         />
       )}
     </div>
