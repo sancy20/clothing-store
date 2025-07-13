@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("wishlistItems", {
+    await queryInterface.createTable("wishlist_items", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -39,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("wishlistItems");
+    await queryInterface.dropTable("wishlist_items");
   },
 };
