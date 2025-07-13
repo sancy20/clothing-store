@@ -17,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --- 2. Middleware ---
-const allowedOrigins = ["hhttp://localhost:5000", "http://146.190.95.90"];
+const allowedOrigins = ["http://localhost:5173", "http://128.199.193.250"];
 
 app.use(
   cors({
