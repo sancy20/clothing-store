@@ -178,7 +178,7 @@ const AdminHeroPanelPage = () => {
                       className='w-10 h-16 object-cover rounded-sm bg-gray-700'
                     />
                     <img
-                      src={panel.imageUrl}
+                      src={panel.logoUrl}
                       alt='Logo'
                       className='w-8 h-8 object-contain bg-gray-700'
                     />
@@ -303,7 +303,6 @@ const AdminHeroPanelPage = () => {
                 className='w-full p-2 bg-gray-700 rounded'
               />
 
-              {/* --- UPDATED IMAGE URL INPUT --- */}
               <div>
                 <label className='text-sm text-gray-400'>Main Image</label>
                 <div className='flex items-center space-x-2'>
@@ -332,7 +331,6 @@ const AdminHeroPanelPage = () => {
                 </div>
               </div>
 
-              {/* --- UPDATED LOGO URL INPUT --- */}
               <div>
                 <label className='text-sm text-gray-400'>Logo Image</label>
                 <div className='flex items-center space-x-2'>

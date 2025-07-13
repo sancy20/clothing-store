@@ -62,8 +62,8 @@ const Hero = () => {
 
             <div>
               <img
-                src={panel.imageUrl}
-                alt={`Logo for ${panel.brand}`}
+                src={panel.logoUrl}
+                alt={`Logo for {panel.logoUrl}`}
                 className='absolute w-10 h-10 object-contain bottom-2 left-2 group-hover:w-24 group-hover:h-24 group-hover:bottom-1/2 group-hover:left-1/2 group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out'
               />
             </div>
