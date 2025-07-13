@@ -1,6 +1,13 @@
 const sequelize = require("../config/database");
 const { Op } = require("sequelize");
-const { Order, OrderItem, Product, User, ProductImage } = require("../models");
+const {
+  Order,
+  OrderItem,
+  Product,
+  User,
+  ProductImage,
+  ProductVariant,
+} = require("../models");
 const abaApiService = require("../services/abaApiService");
 
 const initiateKhqrPayment = async (req, res) => {
@@ -68,6 +75,9 @@ const createCodOrder = async (req, res) => {
     let totalPrice = 0;
     for (const item of cartItems) {
       const product = await Product.findByPk(item.id);
+      if (!product) {
+        throw new Error(`Product with ID ${item.id} not found.`);
+      }
       totalPrice += parseFloat(product.price) * item.quantity;
     }
 
@@ -83,6 +93,22 @@ const createCodOrder = async (req, res) => {
     );
 
     for (const item of cartItems) {
+      const variant = await ProductVariant.findOne({
+        where: {
+          product_id: item.id,
+          color: item.color,
+          size: item.size,
+        },
+        transaction: t,
+      });
+
+      if (!variant || variant.stock_quantity < item.quantity) {
+        throw new Error(`Not enough stock for product ID ${item.id}`);
+      }
+
+      variant.stock_quantity -= item.quantity;
+      await variant.save({ transaction: t });
+
       await OrderItem.create(
         {
           orderId: order.id,
@@ -142,8 +168,6 @@ const handlePaymentWebhook = async (req, res) => {
   }
 };
 
-// --- ADMIN & USER-FACING CONTROLLERS ---
-
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.findAll({
@@ -193,7 +217,6 @@ const getMyOrders = async (req, res) => {
 
     const orders = JSON.parse(JSON.stringify(ordersData));
 
-    // --- DEBUGGING LOGIC STARTS HERE ---
     console.log("--- Debugging getMyOrders ---");
     for (const order of orders) {
       for (const item of order.orderItems) {
@@ -202,14 +225,13 @@ const getMyOrders = async (req, res) => {
             `Checking Order #${order.id}, Item: ${item.product.name}`
           );
           console.log(`- Purchased Color: ${item.color_at_purchase}`);
-          // This next log is the most important one. It shows what images are available.
           console.log(`- Available Images in DB:`, item.product.images);
 
           const variantImage = item.product.images.find(
             (img) => img.color_hint === item.color_at_purchase
           );
 
-          console.log(`- Found Matching Image:`, variantImage); // Will be undefined if no match is found
+          console.log(`- Found Matching Image:`, variantImage);
 
           if (variantImage) {
             item.product.image_url = variantImage.image_url;
@@ -218,7 +240,6 @@ const getMyOrders = async (req, res) => {
       }
     }
     console.log("--- End Debugging ---");
-    // --- DEBUGGING LOGIC ENDS HERE ---
 
     res.json(orders);
   } catch (error) {
